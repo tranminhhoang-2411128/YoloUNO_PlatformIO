@@ -289,12 +289,12 @@ void handleToggle()
   if (led == 1)
   {
     led1_state = !led1_state;
-    Serial.println("YOUR CODE TO CONTROL LED1");
+    digitalWrite(LED1_PIN, led1_state);
   }
   else if (led == 2)
   {
     led2_state = !led2_state;
-    Serial.println("YOUR CODE TO CONTROL LED2");
+    digitalWrite(LED2_PIN, led2_state);
   }
   server.send(200, "application/json",
               "{\"led1\":\"" + String(led1_state ? "ON" : "OFF") +
@@ -356,15 +356,14 @@ void connectToWiFi()
   }
   Serial.print("Connecting to: ");
   Serial.print(wifi_ssid.c_str());
-
-  Serial.print(" Password: ");
-  Serial.print(wifi_password.c_str());
 }
 
 // ========== Main task ==========
 void main_server_task(void *pvParameters)
 {
   pinMode(BOOT_PIN, INPUT_PULLUP);
+  pinMode(LED1_PIN, OUTPUT);
+  pinMode(LED2_PIN, OUTPUT);
 
   startAP();
   setupServer();
@@ -376,13 +375,12 @@ void main_server_task(void *pvParameters)
     // BOOT Button to switch to AP Mode
     if (digitalRead(BOOT_PIN) == LOW)
     {
-      vTaskDelay(100);
+      vTaskDelay(pdMS_TO_TICKS(100));
       if (digitalRead(BOOT_PIN) == LOW)
       {
         if (!isAPMode)
         {
           startAP();
-          setupServer();
         }
       }
     }
@@ -405,9 +403,6 @@ void main_server_task(void *pvParameters)
       { // timeout 10s
         Serial.println("WiFi connect failed! Back to AP.");
         startAP();
-        setupServer();
-        connecting = false;
-        isWifiConnected = false;
       }
     }
 
