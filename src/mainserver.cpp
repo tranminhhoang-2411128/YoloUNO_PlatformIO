@@ -294,7 +294,6 @@ void handleToggle()
   else if (led == 2)
   {
     led2_state = !led2_state;
-    digitalWrite(LED2_PIN, led2_state);
   }
   server.send(200, "application/json",
               "{\"led1\":\"" + String(led1_state ? "ON" : "OFF") +
@@ -363,7 +362,6 @@ void main_server_task(void *pvParameters)
 {
   pinMode(BOOT_PIN, INPUT_PULLUP);
   pinMode(LED1_PIN, OUTPUT);
-  pinMode(LED2_PIN, OUTPUT);
 
   startAP();
   setupServer();
