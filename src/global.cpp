@@ -11,3 +11,5 @@ String wifi_password = "";
  
 bool isWifiConnected = false;
 SemaphoreHandle_t xBinarySemaphoreInternet = NULL;
+
+SemaphoreHandle_t xBinarySemaphoreNEO = NULL;

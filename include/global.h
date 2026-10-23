@@ -22,5 +22,7 @@ extern String wifi_password;
 extern bool isWifiConnected;
 extern SemaphoreHandle_t xBinarySemaphoreInternet;
 
+// Trạng thái LED Neopixel
+extern SemaphoreHandle_t xBinarySemaphoreNEO;
 
 #endif

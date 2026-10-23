@@ -9,7 +9,7 @@
 #define BOOT_PIN 0
 
 //extern WebServer server;
-extern bool led2_state;
+extern volatile bool led2_state;
 extern bool isAPMode;
 
 

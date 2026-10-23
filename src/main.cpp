@@ -16,8 +16,10 @@ void neo_pixel(void *pvParameters){
     strip.show();
 
     while(1) {                          
-        if ((bool) pvParameters) strip.setPixelColor(0, strip.Color(255, 0, 0)); // Set pixel 0 to red
-        else strip.setPixelColor(0, strip.Color(0, 0, 0));
+        if (xSemaphoreTake(xBinarySemaphoreNEO, portMAX_DELAY) == pdTRUE){
+            strip.setPixelColor(0, led2_state ? strip.Color(255, 0, 0) : 0);
+            strip.show();          
+        }
     }
 }
 
@@ -55,7 +57,8 @@ Adafruit_NeoPixel strip(LED_COUNT, NEO_PIN, NEO_GRB + NEO_KHZ800);
 void setup() {
   // put your setup code here, to run once for task creation
   //xTaskCreate(led_blinky, "LED Control", 2048, NULL, 2, NULL);
-  xTaskCreate(neo_pixel, "NEO Control", 2048, (void*)led2_state, 3, NULL);
+  xBinarySemaphoreNEO = xSemaphoreCreateBinary();
+  xTaskCreate(neo_pixel, "NEO Control", 2048, NULL, 2, NULL);
   //xTaskCreate(temp_humi_monitor, "TEMP and HUMI", 2048, NULL, 2, NULL);
   xBinarySemaphoreInternet = xSemaphoreCreateBinary();
 

@@ -294,6 +294,7 @@ void handleToggle()
   else if (led == 2)
   {
     led2_state = !led2_state;
+    xSemaphoreGive(xBinarySemaphoreNEO);
   }
   server.send(200, "application/json",
               "{\"led1\":\"" + String(led1_state ? "ON" : "OFF") +
